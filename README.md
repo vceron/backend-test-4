@@ -31,7 +31,7 @@ Please keep the following points in mind:
 
 - The focus of this test is the interaction between your Rails server and Twilio - only inbound calls should be handled;
 - In order to test the interaction between Twilio and your local environment, you can use tunnels like [ngrok.com](https://ngrok.com);
-- Register a test account on [Twilio](https://twilio.com) - contact us if you need help in order to setup one or need extra credits;
+- Register a [test account](https://support.twilio.com/hc/en-us/articles/223136107-How-does-Twilio-s-Free-Trial-work-) on [Twilio](https://twilio.com) - contact us if you need help in order to setup one or need extra credits;
 - Do not customize forms or views in order to modify models (except if it helps you to test);
 - You can add all the models you need or extend the existing ones;
 - You can add/modify as many gems as you want or change the Ruby version;
