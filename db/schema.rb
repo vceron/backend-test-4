@@ -10,11 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170719183956) do
+ActiveRecord::Schema.define(version: 20180523212933) do
 
-  create_table "calls", force: :cascade do |t|
+  create_table "calls", primary_key: "call_id", id: :string, force: :cascade do |t|
+    t.string "to"
+    t.string "from"
+    t.string "callDirection"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["call_id"], name: "sqlite_autoindex_calls_1", unique: true
   end
 
 end
