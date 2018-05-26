@@ -7,7 +7,7 @@ class Call < ApplicationRecord
         from: params[:From],
         to: params[:To],
         callDirection: params[:Direction],
-        callStatus: params[:CallStatus],
+        callStatus: unless params[:msg].eql? 'Gather End' then params[:CallStatus] else params[:msg] end,
         fromCountry: params[:FromCountry],
         toCountry: params[:ToCountry]})
 
