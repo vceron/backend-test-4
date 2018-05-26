@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 20180523212933) do
     t.string "callStatus"
     t.string "fromCountry"
     t.string "toCountry"
+    t.datetime "finished_at"
+    t.integer "duration"
     t.index ["call_id"], name: "sqlite_autoindex_calls_1", unique: true
   end
 

@@ -9,6 +9,8 @@ class CallsController < ApplicationController
   def index
   end
 
+  # POST "/calls/process_selection
+  # Entry webhook from Twilio
   # handle call, send say & gather commands
   def handle
     response = Twilio::TwiML::VoiceResponse.new
@@ -33,6 +35,7 @@ class CallsController < ApplicationController
     render xml: response.to_s
   end
 
+  # POST "/calls/process_selection"
   # process interaction of gather command
   def process_selection
     msg = "Pressed key is #{params['Digits']}"
@@ -45,6 +48,14 @@ class CallsController < ApplicationController
 
   # Destroy logged call
   def destroy
+  end
+
+  # POST "/calls/update_details"
+  # CALL STATUS CHANGES :
+  # Almost empty as 'before_action' does the job
+  # https://www.twilio.com/blog/2015/05/introducing-call-progress-events-flexibly-track-and-control-your-outbound-calls.html
+  def update_details
+    render status: 200, json: @controller.to_json
   end
 
   private

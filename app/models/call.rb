@@ -9,7 +9,9 @@ class Call < ApplicationRecord
         callDirection: params[:Direction],
         callStatus: unless params[:msg].eql? 'Gather End' then params[:CallStatus] else params[:msg] end,
         fromCountry: params[:FromCountry],
-        toCountry: params[:ToCountry]})
+        toCountry: params[:ToCountry],
+        duration: if params[:CallStatus] == 'completed' then params[:CallDuration] end,
+        finished_at: if params[:CallStatus] == 'completed' then Time.now end })
 
     call.save!
   end

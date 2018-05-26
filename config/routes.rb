@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   post 'calls/handle', to: 'calls#handle'
   post 'calls/process_selection', to: 'calls#process_selection'
+  post 'calls/update_details', to: 'calls#update_details'
 
   get 'calls/destroy', to: 'calls#destroy'
 
