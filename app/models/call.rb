@@ -6,7 +6,10 @@ class Call < ApplicationRecord
         call_id: params[:CallSid],
         from: params[:From],
         to: params[:To],
-        callDirection: params[:Direction]})
+        callDirection: params[:Direction],
+        callStatus: params[:CallStatus],
+        fromCountry: params[:FromCountry],
+        toCountry: params[:ToCountry]})
 
     call.save!
   end

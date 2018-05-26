@@ -18,6 +18,9 @@ ActiveRecord::Schema.define(version: 20180523212933) do
     t.string "callDirection"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "callStatus"
+    t.string "fromCountry"
+    t.string "toCountry"
     t.index ["call_id"], name: "sqlite_autoindex_calls_1", unique: true
   end
 
