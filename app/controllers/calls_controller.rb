@@ -38,7 +38,8 @@ class CallsController < ApplicationController
   # POST "/calls/process_selection"
   # process interaction of gather command
   def process_selection
-    case params['Digits']
+    Call.save_selection(params)
+    case params[:Digits]
       when "1" then forward_call
       when "2" then record_message
       else handle
@@ -46,12 +47,11 @@ class CallsController < ApplicationController
   end
 
   def process_dial
-    puts params.to_s
     render status: 200, json: @controller.to_json
   end
 
   def process_record
-    puts params.to_s
+    Call.save_recording_details(params)
     render status: 200, json: @controller.to_json
   end
 
@@ -70,7 +70,7 @@ class CallsController < ApplicationController
   private
   def log_call
     puts params.to_s
-    @call = Call.create_or_update(params)
+    Call.create_or_update(params) unless !params[:RecordingSid].nil? || !params[:DialCallSid].nil? #only save original call details
   end
 
   def forward_call

@@ -16,4 +16,16 @@ class Call < ApplicationRecord
     call.save!
   end
 
+  def self.save_recording_details(params)
+    call = self.find(params[:CallSid])
+    call.recordingURL = params[:RecordingUrl]
+    call.save!
+  end
+
+  def self.save_selection(params)
+    call = self.find(params[:CallSid])
+    call.selection = params[:Digits]
+    call.save!
+  end
+
 end
