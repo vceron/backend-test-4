@@ -17,7 +17,7 @@ class CallsController < ApplicationController
     response.say('This is the answer machine of Victor!',
                  voice: 'woman',
                  language: 'en-US')
-    response.gather(input: 'dtmf', timeout: 5, num_digits: 1, action: calls_process_selection_url) do |gather|
+    response.gather(input: 'dtmf', timeout: 5, num_digits: 1, action: selection_url) do |gather|
       gather.say(' Press 1 to call to him to his personal phone or 2 to leave him a message.',
                  voice: 'woman',
                  language: 'en-US')
@@ -38,12 +38,21 @@ class CallsController < ApplicationController
   # POST "/calls/process_selection"
   # process interaction of gather command
   def process_selection
-    msg = "Pressed key is #{params['Digits']}"
-    response = Twilio::TwiML::VoiceResponse.new
-    response.say(msg,
-                 voice: 'woman',
-                 language: 'en-US')
-    render xml: response.to_s
+    case params['Digits']
+      when "1" then forward_call
+      when "2" then record_message
+      else handle
+    end
+  end
+
+  def process_dial
+    puts params.to_s
+    render status: 200, json: @controller.to_json
+  end
+
+  def process_record
+    puts params.to_s
+    render status: 200, json: @controller.to_json
   end
 
   # Destroy logged call
@@ -60,6 +69,28 @@ class CallsController < ApplicationController
 
   private
   def log_call
+    puts params.to_s
     @call = Call.create_or_update(params)
+  end
+
+  def forward_call
+    response = Twilio::TwiML::VoiceResponse.new
+    response.say('Forwarding call to Victor', voice: 'woman', language: 'en-US')
+    response.dial(number: '33603477892',
+                  action: dial_url)
+    response.say('Thank you for calling, good bye!', voice: 'woman', language: 'en-US')
+    response.hangup
+
+    render xml: response.to_s
+  end
+
+  def record_message
+    response = Twilio::TwiML::VoiceResponse.new
+    response.say('Start your message after the bip.', voice: 'woman', language: 'en-US')
+    response.record(timeout: 10,
+                    play_beep: true,
+                    finish_on_key: '#',
+                    action: record_url)
+    render xml: response.to_s
   end
 end

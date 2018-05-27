@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   get 'calls/index', to: 'calls#index'
 
   post 'calls/handle', to: 'calls#handle'
-  post 'calls/process_selection', to: 'calls#process_selection'
+  post 'calls/process_selection', to: 'calls#process_selection', as: :selection
+  post 'calls/process_dial', to: 'calls#process_dial', as: :dial
+  post 'calls/process_record', to: 'calls#process_record', as: :record
   post 'calls/update_details', to: 'calls#update_details'
 
   get 'calls/destroy', to: 'calls#destroy'
