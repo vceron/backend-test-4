@@ -5,6 +5,8 @@ class CallsController < ApplicationController
 
   before_action :log_call, :except => [:index, :destroy]
 
+  MY_NUMBER = ENV['MY_NUMBER']
+
   # show all calls
   def index
     @calls = Call.order('created_at DESC')
@@ -87,7 +89,7 @@ class CallsController < ApplicationController
   def forward_call
     response = Twilio::TwiML::VoiceResponse.new
     response.say('Forwarding call to Victor', voice: 'woman', language: 'en-US')
-    response.dial(number: '33603477892',
+    response.dial(number: MY_NUMBER,
                   action: dial_url)
     response.say('Thank you for calling, good bye!', voice: 'woman', language: 'en-US')
     response.hangup
