@@ -3,13 +3,19 @@ class CallsController < ApplicationController
   # Instead setting 'protect_from_forgery prepend: true' in ApplicationController
   skip_before_action :verify_authenticity_token
 
-  before_action :log_call
+  before_action :log_call, :except => [:index, :destroy]
 
   # show all calls
   def index
+    @calls = Call.order('created_at DESC')
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @calls }
+    end
   end
 
-  # POST "/calls/process_selection
+  # POST "/calls/handle
   # Entry webhook from Twilio
   # handle call, send say & gather commands
   def handle
@@ -46,10 +52,12 @@ class CallsController < ApplicationController
     end
   end
 
+  # Dummy method to log dial details
   def process_dial
     render status: 200, json: @controller.to_json
   end
 
+  # When recording is finished
   def process_record
     Call.save_recording_details(params)
     render status: 200, json: @controller.to_json
@@ -70,7 +78,10 @@ class CallsController < ApplicationController
   private
   def log_call
     puts params.to_s
-    Call.create_or_update(params) unless !params[:RecordingSid].nil? || !params[:DialCallSid].nil? #only save original call details
+    if params[:RecordingSid].nil? && params[:DialCallSid].nil? then
+      Call.create_or_update(params)  #only save original call details
+    end
+
   end
 
   def forward_call

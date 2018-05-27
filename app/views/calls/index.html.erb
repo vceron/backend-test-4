@@ -1,2 +1,35 @@
-<h1>Calls#index</h1>
-<p>Find me in app/views/calls/index.html.erb</p>
+<h1>Calls list</h1>
+<table>
+  <tr>
+    <th>Call ID</th>
+    <th>Call direction</th>
+    <th>From</th>
+    <th>To</th>
+    <th>Call Status</th>
+    <th>Started At</th>
+    <th>Finished At</th>
+    <th>Duration</th>
+    <th>Selection</th>
+    <th>Recording URL</th>
+  </tr>
+
+  <% @calls.each do |call| %>
+    <tr>
+      <td><%= call.call_id %></td>
+      <td><%= call.callDirection %></td>
+      <td><%= call.from %></td>
+      <td><%= call.to %></td>
+      <td><%= call.callStatus %></td>
+      <td><%= call.created_at.strftime('%d/%B: %H:%M:%S')  %></td>
+      <td><%= call.finished_at ? call.finished_at.strftime('%d/%B: %H:%M:%S')  : nil %></td>
+      <td><%= call.duration ? call.duration.to_s + ' seconds' : nil %> </td>
+      <td><%= call.selection %> </td>
+      <% if call.recordingURL %>
+        <td> <audio controls>
+          <source src='<%= call.recordingURL %>' type="audio/mpeg">
+        </audio></td>
+      <% end %>
+    </tr>
+  <% end %>
+
+</table>
