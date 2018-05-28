@@ -1,35 +1,44 @@
-<h1>Calls list</h1>
-<table>
-  <tr>
-    <th>Call ID</th>
-    <th>Call direction</th>
-    <th>From</th>
-    <th>To</th>
-    <th>Call Status</th>
-    <th>Started At</th>
-    <th>Finished At</th>
-    <th>Duration</th>
-    <th>Selection</th>
-    <th>Recording URL</th>
-  </tr>
-
-  <% @calls.each do |call| %>
-    <tr>
-      <td><%= call.call_id %></td>
-      <td><%= call.callDirection %></td>
-      <td><%= call.from %></td>
-      <td><%= call.to %></td>
-      <td><%= call.callStatus %></td>
-      <td><%= call.created_at.strftime('%d/%B: %H:%M:%S')  %></td>
-      <td><%= call.finished_at ? call.finished_at.strftime('%d/%B: %H:%M:%S')  : nil %></td>
-      <td><%= call.duration ? call.duration.to_s + ' seconds' : nil %> </td>
-      <td><%= call.selection %> </td>
-      <% if call.recordingURL %>
-        <td> <audio controls>
-          <source src='<%= call.recordingURL %>' type="audio/mpeg">
-        </audio></td>
-      <% end %>
+<h1 class="font-weight-normal">Calls list</h1>
+<div class="table-responsive">
+  <table class="table table-hover table-striped">
+    <tr class="thead-light">
+      <th>Call ID</th>
+      <th>Call direction</th>
+      <th>From</th>
+      <th>To</th>
+      <th>Call Status</th>
+      <th>Started At</th>
+      <th>Finished At</th>
+      <th>Duration</th>
+      <th>Menu Selection</th>
+      <th>Recording URL</th>
     </tr>
-  <% end %>
 
-</table>
+    <% @calls.each do |call| %>
+      <tr>
+        <td><%= call.call_id %></td>
+        <td><%= call.callDirection %></td>
+        <td><%= call.from %></td>
+        <td><%= call.to %></td>
+        <td><%= call.callStatus %></td>
+        <td><%= call.created_at.strftime('%d/%B: %H:%M:%S').in_time_zone("CET")  %></td>
+        <td><%= call.finished_at ? call.finished_at.strftime('%d/%B: %H:%M:%S').in_time_zone("CET")  : nil %></td>
+        <td><%= call.duration ? call.duration.to_s + ' seconds' : nil %> </td>
+        <td><%= case call.selection
+                when "1"
+                "Forwarded call"
+                when "2"
+                "Recorded message"
+                else
+                "No selection"
+                end %> </td>
+        <% if call.recordingURL %>
+          <td> <audio controls>
+            <source src='<%= call.recordingURL %>' type="audio/mpeg">
+          </audio></td>
+        <% end %>
+      </tr>
+    <% end %>
+
+  </table>
+</div>
